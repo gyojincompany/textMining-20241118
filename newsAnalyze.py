@@ -82,3 +82,15 @@ data_df["description"] = data_df["description"].apply(lambda x : re.sub(r'[^ㄱ-
 
 print(data_df)
 
+data_title_tfidf = tfidf.transform(data_df["title"])  # title tf-idf 벡터
+data_descripion_tfidf = tfidf.transform(data_df["description"])  # descripion tf-idf 벡터
+
+data_title_predict = SA_lr_best.predict(data_title_tfidf)
+
+data_df["title_label"] = data_title_predict  # 새로운 title_label 열 추가(내용: 예측한 감성 결과 1 or 0)
+
+data_description_predict = SA_lr_best.predict(data_descripion_tfidf)
+
+data_df["description_label"] = data_description_predict  # 새로운 description_label 열 추가(내용: 예측한 감성 결과 1 or 0)
+
+data_df.to_csv("data/코로나뉴스_감성분석.csv", encoding="euc-kr")
