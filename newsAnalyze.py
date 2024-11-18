@@ -93,4 +93,4 @@ data_description_predict = SA_lr_best.predict(data_descripion_tfidf)
 
 data_df["description_label"] = data_description_predict  # 새로운 description_label 열 추가(내용: 예측한 감성 결과 1 or 0)
 
-data_df.to_csv("data/코로나뉴스_감성분석.csv", encoding="euc-kr")
+data_df.to_csv("data/코로나뉴스_감성분석.csv", encoding="euc-kr", index=None)
