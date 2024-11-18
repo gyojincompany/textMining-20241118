@@ -1,5 +1,6 @@
 import pandas as pd
 from scripts.regsetup import description
+from konlpy.tag import Okt
 
 data_df = pd.read_csv("data/코로나뉴스_감성분석.csv", encoding="euc-kr")
 print(data_df.info())
@@ -29,3 +30,54 @@ for index, data in data_df.iterrows():  # 1회전) 첫번째행이 data에 저�
 
 NEG_data_df.to_csv("data/코로나뉴스_NEGATIVE.csv", encoding="euc-kr")
 POS_data_df.to_csv("data/코로나뉴스_POSITIVE.csv", encoding="euc-kr")
+
+print(f"부정 감성 요약 뉴스 개수 : {len(NEG_data_df)}")
+print(f"긍정 감성 요약 뉴스 개수 : {len(POS_data_df)}")
+
+### 긍정 감성 뉴스명사 리스트 추출
+POS_description = POS_data_df["description"]  # 긍정 요약 뉴스에서 description 칼럼만 추출
+
+POS_description_noun_tk = []  # 명사만 추출하여 담길 빈 리스트
+
+okt = Okt()
+
+for des in POS_description:
+    POS_description_noun_tk.append(okt.nouns(des))
+
+print(POS_description_noun_tk)
+
+POS_description_noun_join = []  # 1차원 리스트(모든 요소를 join)
+
+
+for des in POS_description_noun_tk:
+    POS_description_noun_temp = []
+    for des2 in des:
+        if len(des2) > 1:
+            POS_description_noun_temp.append(des2)
+    POS_description_noun_join.append(" ".join(POS_description_noun_temp))
+
+print(POS_description_noun_join)
+
+### 부정 감성 뉴스명사 리스트 추출
+NEG_description = NEG_data_df["description"]  # 긍정 요약 뉴스에서 description 칼럼만 추출
+
+NEG_description_noun_tk = []  # 명사만 추출하여 담길 빈 리스트
+
+okt = Okt()
+
+for des in NEG_description:
+    NEG_description_noun_tk.append(okt.nouns(des))
+
+print(NEG_description_noun_tk)
+
+NEG_description_noun_join = []  # 1차원 리스트(모든 요소를 join)
+
+
+for des in NEG_description_noun_tk:
+    NEG_description_noun_temp = []
+    for des2 in des:
+        if len(des2) > 1:
+            NEG_description_noun_temp.append(des2)
+    NEG_description_noun_join.append(" ".join(NEG_description_noun_temp))
+
+print(NEG_description_noun_join)
